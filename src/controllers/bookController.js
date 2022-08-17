@@ -1,14 +1,74 @@
-const { count } = require("console")
+ const { count } = require("console")
 const BookModel= require("../models/bookModel")
 
+//1 creating  all books data
 const createBook= async function (req, res) {
     let data= req.body
-
     let savedData= await BookModel.create(data)
     res.send({msg: savedData})
 }
 
-const getBooksData= async function (req, res) {
+//2 bookList : gives all the books- their bookName and authorName only
+const bookList = async function (req, res) {
+    let allBooks= await BookModel.find().select( { bookName :1 , authorName : 1 , _id: 0} )
+    res.send({msg: allBooks})
+}
+
+//3 getBooksInYear: takes year as input in post request and gives list of 
+//all books published that year
+const getBooksInYear = async function (req, res) {
+    let getbookyear = req.query.getbookyear
+    let allBooks= await BookModel.find( { year : getbookyear })
+    res.send({msg: allBooks})
+}
+
+// 4 getParticularBooks:- (this is a good one, make sincere effort to solve this) take 
+//any input and use it as a condition to fetch books that satisfy that condition 
+const getParticularBooks= async function (req, res) {
+    let getparticularbook = req.body.bookName
+    let result =  req.body.year   //getting year as unput 
+    let year1 = Number(result) // converting into number
+    let allBooks= await BookModel.find({ bookName : { $eq : getparticularbook }}) 
+    let allyear= await BookModel.find({ year : { $eq : year1 }})
+    res.send({msg: allBooks, year: allyear})
+}
+
+//5 getXINRBooks- request to return all books who have an 
+//Indian price tag of “100INR” or “200INR” or “500INR”
+
+// const getXINRBooks= async function (req, res) {
+//   let allBooks= await BookModel.find({ "price.indianPrice" : { $in: [100 , 300 ,500]}})
+//   res.send({msg: allBooks })
+// }
+
+
+
+ 
+// 6 getRandomBooks - returns books that are available in stock or have more than 500 pages
+const  getRandomBooks = async function (req, res) {
+let allBooks= await BookModel.find( { totalPages : { $gt : 500}})
+ res.send({msg: allBooks })
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ //let allBooks= await BookModel.findOne({ authorName : "vikram" }) 
+ // findOne( {sales: 10})
+  //let allBooks = await BookModel.find().limit(2)
+
+//const getBooksData= async function (req, res) {
 
     // let allBooks= await BookModel.find( ).count() // COUNT
 
@@ -65,21 +125,58 @@ const getBooksData= async function (req, res) {
     
     // ASYNC AWAIT
     
-    let a= 2+4
-    a= a + 10
-    console.log(a)
-    let allBooks= await BookModel.find( )  //normally this is an asynchronous call..but await makes it synchronous
+    // let a= 2+4
+    // a= a + 10
+    // console.log(a)
+    // let allBooks= await BookModel.find( )  //normally this is an asynchronous call..but await makes it synchronous
 
 
     // WHEN AWAIT IS USED: - database + axios
     //  AWAIT can not be used inside forEach , map and many of the array functions..BE CAREFUL
-    console.log(allBooks)
-    let b = 14
-    b= b+ 10
-    console.log(b)
-    res.send({msg: allBooks})
-}
+    // console.log(allBooks)
+    // let b = 14
+    // b= b+ 10
+    // console.log(b)
+    // res.send({msg: allBooks})
+//}
 
 
+//module.exports.createBook= createBook
+//module.exports.getBooksData= getBooksData
+
+
+const getXINRBooks= async function (req, res) {
+    let allBooks= await BookModel.find({ "price.indianPrice" : { $in: [100 , 300 ,500]}})
+    res.send({msg: allBooks })
+  }
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+//1
 module.exports.createBook= createBook
-module.exports.getBooksData= getBooksData
+//2
+module.exports.bookList=bookList
+
+//3
+module.exports.getBooksInYear=getBooksInYear
+
+//4
+module.exports.getParticularBooks=getParticularBooks
+
+//5
+module.exports.getXINRBooks=getXINRBooks
+
+//6
+module.exports.getRandomBooks=getRandomBooks
