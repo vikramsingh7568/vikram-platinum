@@ -11,5 +11,11 @@ const getAuthorsData= async function (req, res) {
     res.send({data: authors})
 }
 
+//middle ware
+const  middlerware= async function (req, res) {
+   res.send("congrats you are welcome in your profile wow all done smoothly ")
+   
+}
 module.exports.createAuthor= createAuthor
 module.exports.getAuthorsData= getAuthorsData
+module.exports.middlerware=middlerware
