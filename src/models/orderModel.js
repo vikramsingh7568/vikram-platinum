@@ -11,8 +11,12 @@ const orderSchema = new mongoose.Schema( {
         ref : 'productDocument'
     },
 	amount: Number,
-	isFreeAppUser: Boolean, 
-	date: Number,
+	date: String,
+    isFreeAppUser:{
+        type : Boolean,
+        default : false
+    }
+	
 }, { timestamps: true });
 
 module.exports = mongoose.model('orderDocument', orderSchema)
