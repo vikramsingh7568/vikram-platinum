@@ -7,11 +7,11 @@ const commonMW = require ("../middlewares/commonMiddlewares")
 
 router.get("/test-me", function (req, res) {
     res.send("My first ever api!")
+    console.log("my first ever api")
 })
 
 
-
-
+router.get('/testing2',commonMW.NOFunction)
 router.post("/createBook", BookController.createBook  )
 
 
@@ -55,8 +55,6 @@ router.get("/basicRoute", commonMW.mid1, commonMW.mid2, commonMW.mid3, commonMW.
 // router.get("/basicRoute2", commonMW.mid1, UserController.basicCode2)
 // router.get("/basicRoute3", commonMW.mid2, UserController.basicCode3)
 // router.get("/basicRoute4", commonMW.mid1, commonMW.mid4, UserController.basicCode4)
-
-
 
 
 module.exports = router;
