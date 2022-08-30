@@ -59,6 +59,6 @@ let userToBeModified = req.params.userId
 }  
 }
 
-module.exports.authenticate =authenticate
+module.exports.authenticate =authenticateg
 module.exports.authorise =authorise
 module.exports.authorise2 = authorise2
