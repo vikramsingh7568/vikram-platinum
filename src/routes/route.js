@@ -5,7 +5,7 @@ const middleware = require("../middleware/auth")
 router.get("/test-me", function (req, res) {
     res.send("My first ever api!")
 })
-
+try{
 router.post("/createusers", userController.createUser)
 
 router.post("/loginuser", userController.loginUser , middleware.authenticate )
@@ -17,4 +17,7 @@ router.post("/postusers/:userId/posts",middleware.authorise,middleware.authorise
 router.put("/updateusers/:userId", middleware.authorise ,middleware.authorise2, userController.updateUser)
  router.delete('/deleteusers/:userId',middleware.authorise ,middleware.authorise2, userController.deleteUser)
 
+}catch(error){
+    res.send(201).send(error.message)
+  }
 module.exports = router;

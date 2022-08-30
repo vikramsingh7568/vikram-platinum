@@ -5,7 +5,7 @@ const mongoose = require('mongoose')
 
 
 const authenticate = async function(req, res) {
-
+try{
   let userName = req.body.emailId;
   let user = await userModel.findOne({emailId : userName})
   let token = jwt.sign(
@@ -18,10 +18,14 @@ const authenticate = async function(req, res) {
   );
   res.setHeader("x-auth-token", token);
   res.send({ status: true, data: token });
+  } catch(error){
+    res.status(201).send(error.message)
+  }
 };
     
 // authorise ******************************************************************************************************88
 const authorise = function(req, res, next ) {
+  try{
   let token = req.headers["x-Auth-token"];
   if (!token) token = req.headers["x-auth-token"];
   if (!token) return res.send({ status: false, msg: "token must be present" });
@@ -33,9 +37,13 @@ const authorise = function(req, res, next ) {
         next()
     
   });
+}catch(error){
+   res.status(201).send(error.message)
+}
 }
 
 const authorise2 = function(req, res, next) {
+  try{
   let token = req.headers["x-Auth-token"];
   if (!token) token = req.headers["x-auth-token"];
   if (!token) return res.send({ status: false, msg: "token must be present" });
@@ -57,8 +65,11 @@ let userToBeModified = req.params.userId
   }else {
     next()
 }  
+  }catch(error){
+    res.status(201).send(error.message)
+  }
 }
 
-module.exports.authenticate =authenticateg
+module.exports.authenticate =authenticate
 module.exports.authorise =authorise
 module.exports.authorise2 = authorise2
